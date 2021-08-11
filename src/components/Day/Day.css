@@ -1,0 +1,30 @@
+.day {
+	background-color: #fbfbfb;
+	border: 1px solid #b9b9b9;
+	border-radius: 0.25em;
+	height: 125px;
+	padding: 0.25em;
+	overflow: auto;
+	overflow-x: hidden;
+	display: flex;
+}
+
+.day-number {
+	border-radius: 50%;
+	border: 2px dashed #e3b43d;
+	font-weight: 700;
+	text-align: center;
+	height: 2em;
+	width: 2em;
+	line-height: 2em;
+}
+
+.today {
+	background-color: #e3b43d;
+	color: white;
+}
+
+.other-month-day {
+	border: 0px solid black;
+	color: #b9b9b9;
+}
