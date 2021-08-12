@@ -8,15 +8,30 @@ import { CirclePicker } from 'react-color';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import { useParams } from 'react-router';
 import './Reminder.css';
+import { connect } from 'react-redux';
+import { createReminder } from '../../redux';
 
-export default function Reminder() {
+export const Reminder = props => {
 	let { date } = useParams();
 	let fullDate = date.split('-');
 	let reminderDate = new Date(fullDate[0], fullDate[1], fullDate[2]);
+	const [description, setDescription] = useState('');
 	const [startDate, setStartDate] = useState(reminderDate);
 	const [color, setColor] = useState('#f44336');
 	const [country, setCountry] = useState('');
 	const [region, setRegion] = useState('');
+
+	function handleCreateReminder(event) {
+		let reminder = {
+			description: description,
+			city: region,
+			date: startDate,
+			time: startDate,
+			color: color.hex || color,
+		};
+		props.createReminder(reminder);
+	}
+
 	return (
 		<div>
 			<form noValidate autoComplete="off">
@@ -34,7 +49,13 @@ export default function Reminder() {
 						</Typography>
 
 						<FormControl fullWidth>
-							<TextField id="standard-basic" label="Describe your reminder here" inputProps={{ maxLength: 30 }} />
+							<TextField
+								id="standard-basic"
+								label="Describe your reminder here"
+								inputProps={{ maxLength: 30 }}
+								value={description}
+								onChange={event => setDescription(event.target.value)}
+							/>
 						</FormControl>
 						<MuiPickersUtilsProvider utils={DateFnsUtils}>
 							<Grid container spacing={3}>
@@ -83,7 +104,7 @@ export default function Reminder() {
 					<CardActions>
 						<Grid container spacing={3}>
 							<Grid item xs={6}>
-								<Button submit variant="contained" color="primary" startIcon={<SaveIcon />}>
+								<Button variant="contained" color="primary" startIcon={<SaveIcon />} onClick={handleCreateReminder}>
 									Save
 								</Button>
 							</Grid>
@@ -100,4 +121,18 @@ export default function Reminder() {
 			</form>
 		</div>
 	);
-}
+};
+
+const mapStateToProps = state => {
+	return {
+		reminder: state.reminder.reminders,
+	};
+};
+
+const mapDispatchToProps = dispatch => {
+	return {
+		createReminder: reminder => dispatch(createReminder(reminder)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Reminder);
