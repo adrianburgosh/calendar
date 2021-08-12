@@ -9,10 +9,11 @@ export default function Calendar() {
 	let allDays = getPreviousDays(today);
 
 	for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
+		let yearMonthDate = today.getFullYear() + '-' + today.getMonth() + '-' + i;
 		if (i === today.getDate()) {
-			allDays.push(<Day dateDay={i} isToday key={'' + today.getFullYear() + today.getMonth() + i} />);
+			allDays.push(<Day dateDay={i} isToday date={yearMonthDate} key={yearMonthDate} />);
 		} else {
-			allDays.push(<Day dateDay={i} key={'' + today.getFullYear() + today.getMonth() + i} />);
+			allDays.push(<Day dateDay={i} date={yearMonthDate} key={yearMonthDate} />);
 		}
 	}
 
@@ -37,13 +38,8 @@ function getPreviousDays(today) {
 	let curretWeekDay = lastDayOfPreviousMonth.getDay();
 	let previousDays = [];
 	for (let i = curretWeekDay; i >= 0 && i < 6; i--) {
-		previousDays.unshift(
-			<Day
-				dateDay={previousDate}
-				isOtherMonthDay
-				key={'' + lastDayOfPreviousMonth.getFullYear() + lastDayOfPreviousMonth.getMonth() + previousDate}
-			/>
-		);
+		let yearMonthDate = lastDayOfPreviousMonth.getFullYear() + '-' + lastDayOfPreviousMonth.getMonth() + '-' + previousDate;
+		previousDays.unshift(<Day dateDay={previousDate} isOtherMonthDay date={yearMonthDate} key={yearMonthDate} />);
 		previousDate--;
 	}
 	return previousDays;
@@ -55,13 +51,8 @@ function getSubsequentDays(today) {
 	let curretWeekDay = firstDayOfSubsequentMonth.getDay();
 	let subsequentDays = [];
 	for (let i = curretWeekDay; i > 0 && i <= 6; i++) {
-		subsequentDays.push(
-			<Day
-				dateDay={subsequentDate}
-				isOtherMonthDay
-				key={'' + firstDayOfSubsequentMonth.getFullYear() + firstDayOfSubsequentMonth.getMonth() + subsequentDate}
-			/>
-		);
+		let yearMonthDate = firstDayOfSubsequentMonth.getFullYear() + '-' + firstDayOfSubsequentMonth.getMonth() + '-' + subsequentDate;
+		subsequentDays.push(<Day dateDay={subsequentDate} isOtherMonthDay date={yearMonthDate} key={yearMonthDate} />);
 		subsequentDate++;
 	}
 	return subsequentDays;

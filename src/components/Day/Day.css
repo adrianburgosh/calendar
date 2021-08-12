@@ -9,6 +9,15 @@
 	display: flex;
 }
 
+a.day {
+	text-decoration: none;
+}
+
+a.day:visited,
+a.day:link {
+	color: black;
+}
+
 .day-number {
 	border-radius: 50%;
 	border: 2px dashed #e3b43d;
