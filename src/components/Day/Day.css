@@ -2,20 +2,13 @@
 	background-color: #fbfbfb;
 	border: 1px solid #b9b9b9;
 	border-radius: 0.25em;
+	display: flex;
+	flex-direction: column;
 	height: 125px;
-	padding: 0.25em;
 	overflow: auto;
 	overflow-x: hidden;
-	display: flex;
-}
-
-a.day {
-	text-decoration: none;
-}
-
-a.day:visited,
-a.day:link {
-	color: black;
+	padding: 0.25em;
+	position: relative;
 }
 
 .day-number {
@@ -26,6 +19,8 @@ a.day:link {
 	height: 2em;
 	width: 2em;
 	line-height: 2em;
+	margin-bottom: 0.5em;
+	z-index: 1;
 }
 
 .today {
@@ -36,4 +31,18 @@ a.day:link {
 .other-month-day {
 	border: 0px solid black;
 	color: #b9b9b9;
+}
+
+.reminder-link {
+	background-color: #fbfbfb;
+	height: 100%;
+	left: 0px;
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	z-index: 0;
+}
+
+.z-index-1 {
+	z-index: 1;
 }

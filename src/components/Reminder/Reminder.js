@@ -1,20 +1,22 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { Button, Card, CardActions, CardContent, FormControl, Grid, Link, TextField, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Button, Card, CardActions, CardContent, FormControl, Grid, TextField, Typography } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker, KeyboardTimePicker } from '@material-ui/pickers';
 import SaveIcon from '@material-ui/icons/Save';
 import CloseIcon from '@material-ui/icons/Close';
-import React, { useState } from 'react';
 import { CirclePicker } from 'react-color';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import { useParams } from 'react-router';
 import './Reminder.css';
 import { connect } from 'react-redux';
 import { createReminder } from '../../redux';
+import { Link, useHistory } from 'react-router-dom';
 
 export const Reminder = props => {
-	let { date } = useParams();
-	let fullDate = date.split('-');
-	let reminderDate = new Date(fullDate[0], fullDate[1], fullDate[2]);
+	const history = useHistory();
+	const { date } = useParams();
+	const fullDate = date.split('-');
+	const reminderDate = new Date(fullDate[0], fullDate[1], fullDate[2]);
 	const [description, setDescription] = useState('');
 	const [startDate, setStartDate] = useState(reminderDate);
 	const [color, setColor] = useState('#f44336');
@@ -23,13 +25,14 @@ export const Reminder = props => {
 
 	function handleCreateReminder(event) {
 		let reminder = {
-			description: description,
 			city: region,
-			date: startDate,
-			time: startDate,
 			color: color.hex || color,
+			dateTime: startDate,
+			description: description,
+			id: props.reminders[props.reminders.length - 1] ? props.reminders[props.reminders.length - 1].id + 1 : 0,
 		};
 		props.createReminder(reminder);
+		history.push('/');
 	}
 
 	return (
@@ -43,7 +46,7 @@ export const Reminder = props => {
 									Reminder or event
 								</Grid>
 								<Grid item xs={6}>
-									<CirclePicker color={color || '#000'} onChangeComplete={setColor} onChange={() => console.log(color)} />
+									<CirclePicker color={color || '#000'} onChangeComplete={setColor} />
 								</Grid>
 							</Grid>
 						</Typography>
@@ -55,6 +58,7 @@ export const Reminder = props => {
 								inputProps={{ maxLength: 30 }}
 								value={description}
 								onChange={event => setDescription(event.target.value)}
+								required={true}
 							/>
 						</FormControl>
 						<MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -71,6 +75,7 @@ export const Reminder = props => {
 											KeyboardButtonProps={{
 												'aria-label': 'change date',
 											}}
+											required={true}
 										/>
 									</FormControl>
 								</Grid>
@@ -85,6 +90,7 @@ export const Reminder = props => {
 											KeyboardButtonProps={{
 												'aria-label': 'change time',
 											}}
+											required={true}
 										/>
 									</FormControl>
 								</Grid>
@@ -109,7 +115,7 @@ export const Reminder = props => {
 								</Button>
 							</Grid>
 							<Grid item xs={6}>
-								<Link href="/" underline="none" color="secondary">
+								<Link to="/" className="cancel">
 									<Button variant="contained" color="secondary" startIcon={<CloseIcon />}>
 										Close
 									</Button>
@@ -125,7 +131,7 @@ export const Reminder = props => {
 
 const mapStateToProps = state => {
 	return {
-		reminder: state.reminder.reminders,
+		reminders: state.reminder.reminders,
 	};
 };
 

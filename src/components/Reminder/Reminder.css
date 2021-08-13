@@ -6,3 +6,7 @@ select#reminderRegion {
 	padding: 0.5em;
 	width: 100%;
 }
+
+a.cancel {
+	text-decoration: none;
+}
