@@ -5,8 +5,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import './ReminderPreview.css';
+import { useHistory } from 'react-router';
 
 export const ReminderPreview = props => {
+	const history = useHistory();
 	let { reminder } = props;
 	const useStyles = makeStyles({
 		reminderPreview: {
@@ -20,8 +22,9 @@ export const ReminderPreview = props => {
 			justifyContent: 'space-between',
 			margin: '0 0.25em',
 			marginBottom: '0.5em',
-			padding: '5px',
+			padding: '3px',
 			paddingLeft: '10px',
+
 			['@media (max-width:1550px)']: {
 				display: 'block',
 				textAlign: 'center',
@@ -30,9 +33,15 @@ export const ReminderPreview = props => {
 	});
 	const classes = useStyles();
 	let finalDescription = reminder.description.length > 16 ? reminder.description.substring(0, 14) + '...' : reminder.description;
+
+	function handleEditClick(event) {
+		history.push(`/reminder/edit/${reminder.id}/`);
+	}
 	return (
-		<div className={classes.reminderPreview} onClick={() => console.log('delete reminder' + reminder.id)}>
-			<span>{finalDescription}</span>
+		<div className={classes.reminderPreview}>
+			<span className="selectable" onClick={handleEditClick}>
+				{finalDescription}
+			</span>
 			<IconButton className="center-icon" size="small" aria-label="delete" onClick={() => props.deleteReminder(reminder)}>
 				<DeleteIcon />
 			</IconButton>

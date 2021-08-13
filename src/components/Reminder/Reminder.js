@@ -1,5 +1,5 @@
 import DateFnsUtils from '@date-io/date-fns';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Card, CardActions, CardContent, FormControl, Grid, TextField, Typography } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker, KeyboardTimePicker } from '@material-ui/pickers';
 import SaveIcon from '@material-ui/icons/Save';
@@ -9,29 +9,51 @@ import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import { useParams } from 'react-router';
 import './Reminder.css';
 import { connect } from 'react-redux';
-import { createReminder } from '../../redux';
+import { createReminder, updateReminder } from '../../redux';
 import { Link, useHistory } from 'react-router-dom';
 
 export const Reminder = props => {
 	const history = useHistory();
-	const { date } = useParams();
-	const fullDate = date.split('-');
-	const reminderDate = new Date(fullDate[0], fullDate[1], fullDate[2]);
+	const { date, id } = useParams();
+
 	const [description, setDescription] = useState('');
-	const [startDate, setStartDate] = useState(reminderDate);
+	const [startDate, setStartDate] = useState(new Date());
 	const [color, setColor] = useState('#f44336');
 	const [country, setCountry] = useState('');
 	const [region, setRegion] = useState('');
 
-	function handleCreateReminder(event) {
+	useEffect(() => {
+		let reminderDate = new Date();
+		let currentReminder = null;
+		if (date) {
+			let fullDate = date.split('-');
+			reminderDate = new Date(fullDate[0], fullDate[1], fullDate[2]);
+		} else if (id) {
+			currentReminder = props.reminders.find(reminder => reminder.id === parseInt(id));
+			reminderDate = new Date(currentReminder.dateTime);
+		}
+		setDescription(currentReminder ? currentReminder.description : '');
+		setStartDate(reminderDate);
+		setColor(currentReminder ? currentReminder.color : '#f44336');
+		setCountry(currentReminder ? currentReminder.country : '');
+		setRegion(currentReminder ? currentReminder.region : '');
+	}, []);
+
+	function handleReminderAction(event) {
+		let lastReminder = props.reminders[props.reminders.length - 1];
 		let reminder = {
-			city: region,
+			country: country,
+			region: region,
 			color: color.hex || color,
 			dateTime: startDate,
 			description: description,
-			id: props.reminders[props.reminders.length - 1] ? props.reminders[props.reminders.length - 1].id + 1 : 0,
+			id: id != null && id != undefined ? parseInt(id) : lastReminder ? lastReminder.id + 1 : 0,
 		};
-		props.createReminder(reminder);
+		if (date) {
+			props.createReminder(reminder);
+		} else if (id) {
+			props.updateReminder(reminder);
+		}
 		history.push('/');
 	}
 
@@ -110,7 +132,7 @@ export const Reminder = props => {
 					<CardActions>
 						<Grid container spacing={3}>
 							<Grid item xs={6}>
-								<Button variant="contained" color="primary" startIcon={<SaveIcon />} onClick={handleCreateReminder}>
+								<Button variant="contained" color="primary" startIcon={<SaveIcon />} onClick={handleReminderAction}>
 									Save
 								</Button>
 							</Grid>
@@ -138,6 +160,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		createReminder: reminder => dispatch(createReminder(reminder)),
+		updateReminder: reminder => dispatch(updateReminder(reminder)),
 	};
 };
 

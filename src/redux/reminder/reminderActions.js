@@ -1,9 +1,22 @@
 // import fetch from 'node-fetch';
-import { CREATE_REMINDER, DELETE_REMINDER, FETCH_WEATHER_REQUEST, FETCH_WEATHER_SUCCESS, FETCH_WEATHER_FAILURE } from './reminderTypes';
+import {
+	CREATE_REMINDER,
+	DELETE_REMINDER,
+	UPDATE_REMINDER,
+	FETCH_WEATHER_REQUEST,
+	FETCH_WEATHER_SUCCESS,
+	FETCH_WEATHER_FAILURE,
+} from './reminderTypes';
 
 export const createReminder = reminder => {
 	return {
 		type: CREATE_REMINDER,
+		payload: reminder,
+	};
+};
+export const updateReminder = reminder => {
+	return {
+		type: UPDATE_REMINDER,
 		payload: reminder,
 	};
 };

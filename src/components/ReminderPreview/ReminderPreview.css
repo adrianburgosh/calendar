@@ -4,3 +4,11 @@
 		margin: auto;
 	}
 }
+
+span.selectable {
+	cursor: pointer;
+}
+
+span.selectable:hover {
+	font-weight: 700;
+}

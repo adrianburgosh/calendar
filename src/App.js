@@ -10,6 +10,9 @@ function App() {
 		<Provider store={store}>
 			<Router>
 				<Switch>
+					<Route path="/reminder/edit/:id">
+						<Reminder />
+					</Route>
 					<Route path="/reminder/:date">
 						<Reminder />
 					</Route>
