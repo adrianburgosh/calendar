@@ -1,0 +1,10 @@
+.weather {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgb(202, 202, 202);
+	border-radius: 5px;
+	color: white;
+	width: 80%;
+	line-height: 2em;
+}

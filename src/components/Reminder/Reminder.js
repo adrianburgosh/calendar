@@ -11,6 +11,8 @@ import './Reminder.css';
 import { connect } from 'react-redux';
 import { createReminder, updateReminder } from '../../redux';
 import { Link, useHistory } from 'react-router-dom';
+import { WeatherAPI } from '../../API/WeatherAPI';
+import Weather from '../Weather/Weather';
 
 export const Reminder = props => {
 	const history = useHistory();
@@ -21,6 +23,7 @@ export const Reminder = props => {
 	const [color, setColor] = useState('#f44336');
 	const [country, setCountry] = useState('');
 	const [region, setRegion] = useState('');
+	const [weather, setWeather] = useState({});
 
 	useEffect(() => {
 		let reminderDate = new Date();
@@ -36,7 +39,11 @@ export const Reminder = props => {
 		setStartDate(reminderDate);
 		setColor(currentReminder ? currentReminder.color : '#f44336');
 		setCountry(currentReminder ? currentReminder.country : '');
-		setRegion(currentReminder ? currentReminder.region : '');
+		if (currentReminder) {
+			handleWeatherCheck(currentReminder.region);
+		} else {
+			setRegion('');
+		}
 	}, []);
 
 	function handleReminderAction(event) {
@@ -47,7 +54,7 @@ export const Reminder = props => {
 			color: color.hex || color,
 			dateTime: startDate,
 			description: description,
-			id: id != null && id != undefined ? parseInt(id) : lastReminder ? lastReminder.id + 1 : 0,
+			id: id !== null && id !== undefined ? parseInt(id) : lastReminder ? lastReminder.id + 1 : 0,
 		};
 		if (date) {
 			props.createReminder(reminder);
@@ -55,6 +62,13 @@ export const Reminder = props => {
 			props.updateReminder(reminder);
 		}
 		history.push('/');
+	}
+
+	function handleWeatherCheck(selectedRegion) {
+		WeatherAPI(selectedRegion).then(selectedRegionWeather => {
+			setWeather(selectedRegionWeather);
+		});
+		setRegion(selectedRegion);
 	}
 
 	return (
@@ -65,7 +79,7 @@ export const Reminder = props => {
 						<Typography gutterBottom variant="h5" component="h2">
 							<Grid container spacing={3}>
 								<Grid item xs={6}>
-									Reminder or event
+									Create reminder or event
 								</Grid>
 								<Grid item xs={6}>
 									<CirclePicker color={color || '#000'} onChangeComplete={setColor} />
@@ -84,7 +98,7 @@ export const Reminder = props => {
 							/>
 						</FormControl>
 						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-							<Grid container spacing={3}>
+							<Grid container spacing={3} justifyContent="center" alignItems="center">
 								<Grid item xs={6}>
 									<FormControl fullWidth>
 										<KeyboardDatePicker
@@ -121,22 +135,25 @@ export const Reminder = props => {
 										<CountryDropdown id="reminderCountry" value={country} onChange={setCountry} required />
 									</FormControl>
 								</Grid>
-								<Grid item xs={6}>
+								<Grid item xs={3}>
 									<FormControl>
-										<RegionDropdown id="reminderRegion" country={country} value={region} onChange={setRegion} required />
+										<RegionDropdown id="reminderRegion" country={country} value={region} onChange={handleWeatherCheck} required />
 									</FormControl>
+								</Grid>
+								<Grid item xs={3}>
+									<Weather weather={weather} />
 								</Grid>
 							</Grid>
 						</MuiPickersUtilsProvider>
 					</CardContent>
 					<CardActions>
 						<Grid container spacing={3}>
-							<Grid item xs={6}>
+							<Grid item xs={1}>
 								<Button variant="contained" color="primary" startIcon={<SaveIcon />} onClick={handleReminderAction}>
 									Save
 								</Button>
 							</Grid>
-							<Grid item xs={6}>
+							<Grid item xs={1}>
 								<Link to="/" className="cancel">
 									<Button variant="contained" color="secondary" startIcon={<CloseIcon />}>
 										Close

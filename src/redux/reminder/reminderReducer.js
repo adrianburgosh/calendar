@@ -14,6 +14,7 @@ const reminderReducer = (state = initialState, action) => {
 				reminders: reminders,
 			};
 		case UPDATE_REMINDER:
+			console.log(`reminders`, reminders);
 			reminders.forEach((reminder, index) => {
 				if (reminder.id === action.payload.id) {
 					reminders[index] = action.payload;
