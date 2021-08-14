@@ -32,7 +32,7 @@
 	"scripts": {
 		"start": "react-dotenv && react-scripts start",
 		"build": "react-dotenv && react-scripts build",
-		"test": "jest --verbose false",
+		"test": "react-scripts test",
 		"test:watch": "npm test -- --watch",
 		"eject": "react-scripts eject"
 	},
