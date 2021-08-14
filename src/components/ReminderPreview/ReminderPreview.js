@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { deleteReminder } from '../../redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { IconButton } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+import CloseIcon from '@material-ui/icons/Close';
 import './ReminderPreview.css';
 import { useHistory } from 'react-router';
 
@@ -43,7 +43,7 @@ export const ReminderPreview = props => {
 				{finalDescription}
 			</span>
 			<IconButton className="center-icon" size="small" aria-label="delete" onClick={() => props.deleteReminder(reminder)}>
-				<DeleteIcon />
+				<CloseIcon />
 			</IconButton>
 		</div>
 	);

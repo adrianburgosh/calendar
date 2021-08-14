@@ -1,1 +1,1 @@
-export { createReminder, updateReminder, deleteReminder } from './reminder/reminderActions';
+export { createReminder, updateReminder, deleteReminder, deleteAllRemindersByDay } from './reminder/reminderActions';

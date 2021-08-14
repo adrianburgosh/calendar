@@ -1,4 +1,4 @@
-import { CREATE_REMINDER, DELETE_REMINDER, UPDATE_REMINDER } from './reminderTypes';
+import { CREATE_REMINDER, DELETE_REMINDER, UPDATE_REMINDER, DELETE_ALL_REMINDERS_BY_DAY } from './reminderTypes';
 
 export const createReminder = reminder => {
 	return {
@@ -16,5 +16,11 @@ export const deleteReminder = reminder => {
 	return {
 		type: DELETE_REMINDER,
 		payload: reminder,
+	};
+};
+export const deleteAllRemindersByDay = day => {
+	return {
+		type: DELETE_ALL_REMINDERS_BY_DAY,
+		payload: day,
 	};
 };

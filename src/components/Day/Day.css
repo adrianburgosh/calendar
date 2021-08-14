@@ -19,8 +19,15 @@
 	height: 2em;
 	width: 2em;
 	line-height: 2em;
-	margin-bottom: 0.5em;
+
 	z-index: 1;
+}
+
+.day-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 0.5em;
 }
 
 .today {

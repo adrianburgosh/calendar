@@ -2,9 +2,10 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: rgb(202, 202, 202);
+	background-color: rgb(221, 221, 221);
+	border: 1px solid #cacaca;
 	border-radius: 5px;
-	color: white;
+	box-shadow: 2px 3px 5px 2px #cacaca96;
 	width: 80%;
 	line-height: 2em;
 }

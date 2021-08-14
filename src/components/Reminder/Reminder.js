@@ -91,7 +91,7 @@ export const Reminder = props => {
 							<TextField
 								id="standard-basic"
 								label="Describe your reminder here"
-								inputProps={{ maxLength: 30 }}
+								inputProps={{ maxLength: 30, minLenght: 10 }}
 								value={description}
 								onChange={event => setDescription(event.target.value)}
 								required={true}
@@ -141,7 +141,7 @@ export const Reminder = props => {
 									</FormControl>
 								</Grid>
 								<Grid item xs={3}>
-									<Weather weather={weather} />
+									<Weather weather={weather} color={color} />
 								</Grid>
 							</Grid>
 						</MuiPickersUtilsProvider>
